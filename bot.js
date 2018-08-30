@@ -13,7 +13,6 @@ function update(message)
 		loadCommands();
 		message.channel.send("succefully updated");
 	});
-	
 }
 function loadCommands()
 {
