@@ -1,5 +1,5 @@
 function main(message)
 {
-	message.channel.send("vous avez utilisÃ /vote");
+	message.channel.send("vous avez utilisé /vote");
 }
 exports.main = main;

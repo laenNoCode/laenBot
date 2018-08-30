@@ -49,7 +49,9 @@ bot.on("message",
 			}
 			try
 			{
-				commands[commandName](message);
+				args = text.split(" ");
+				args.splice(0, 1);
+				commands[commandName](message, array);
 			}
 			catch(exception)
 			{
