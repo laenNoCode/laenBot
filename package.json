@@ -1,0 +1,12 @@
+{
+  "name": "LaenBOT",
+  "version": "1.0.0",
+  "description": "better than robotest",
+  "main": "bot.js",
+  "author": "Laen",
+  "dependencies": {
+    "discord.io": "^2.5.3",
+    "discord.js": "^11.4.0",
+    "winston": "^3.0.0"
+  }
+}
