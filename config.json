@@ -1,0 +1,9 @@
+{
+	"servers":
+	{
+		"default":
+		{
+			"prefix":"!"
+		}
+	}
+}

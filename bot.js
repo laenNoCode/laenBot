@@ -1,29 +1,62 @@
 var Discord = require("discord.js");
 var auth = require("./auth.json");
+var config = require("./config.json");
+var fs = require("fs");
+var exec = require("child_process").exec;
 // Initialize Discord Bot
 var bot = new Discord.Client();
 
+var commands = {};
+function update(message)
+{
+	exec("git pull", (err, stdout, stderr) => {
+		loadCommands();
+		message.channel.send("succefully updated");
+	});
+	
+}
+function loadCommands()
+{
+	commands = {};
+	fs.readdir("./commands", (err, files) =>
+		{
+			files.forEach(file => {
+				console.log(file);
+				var array = file.split(".");
+				if (array[array.length - 1] == "js")
+				{
+					var name = array.slice(0, array.length - 1).join(".");
+					commands[name] = require("./commands/" + name).main;
+				}
+			});
+		});
+	commands["update"] = update;
+}
+loadCommands();
 var pongCount = 0;
 bot.on("message", 
 	function (message) 
 	{
 		var text = message.content;
-		if (text.substring(0, 1) == "!") {
-			var args = text.substring(1).split(" ");
-			var cmd = args[0];
-
-			args = args.splice(1);
-			switch(cmd) {
-				case "intro":
-					message.reply("introduit toi avant ! malotru !");
-				break;
-				case "ping":
-					pongCount ++;
-					if (pongCount % 4 != 0)
-						message.channel.send("pong");
-					else
-						message.channel.send("on va pas faire ca toute la journée ? si ?");
-				}
+		var prefix = config.servers.default.prefix;
+		if (text.substring(0, prefix.length) == prefix) 
+		{
+			var commandName = text.split(" ")[0].substring(prefix.length);
+			if (commands[commandName] === undefined)
+			{
+				message.channel.send("la commande que vous avez demandée n'existe pas");
+				message.channel.send(Object.keys(commands).join(" "));	
+				return;
 			}
-		});
+			try
+			{
+				commands[commandName](message);
+			}
+			catch(exception)
+			{
+				console.log(exception);
+			}
+		}
+	}
+);
 bot.login(auth.token);
