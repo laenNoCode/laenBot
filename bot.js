@@ -56,7 +56,7 @@ bot.on("message",
 			catch(exception)
 			{
 				if(exception.message !== undefined)
-					message.channel.send(exception.message);
+					message.channel.send("Error: " + exception.message);
 			}
 		}
 	}
