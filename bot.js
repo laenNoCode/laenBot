@@ -53,7 +53,8 @@ bot.on("message",
 			}
 			catch(exception)
 			{
-				console.log(exception);
+				if(exception.message !== undefined)
+					message.channel.send(exception.message);
 			}
 		}
 	}
