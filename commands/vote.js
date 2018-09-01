@@ -2,6 +2,7 @@ function main(message, args)
 {
 	message.channel.send("`!vote` is in alpha testing.");
 	message.channel.send("args:" + args);
+	showHelp(message);
 	if (args === [] || args === ["help"])
 	{
 		showHelp(message);
