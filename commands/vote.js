@@ -12,15 +12,20 @@ function main(message, args)
 		message.channel.send("You need to provide a vote name.");
 		return;
 	}
-	var subcommand = args.shift();
-	var vm = new VoteManager();
-	var cmd = vm[subcommand];
-	if (cmd === undefined) {
-		args.unshift(subcommand);
-		cmd = vm.ballot;
+	try {
+		var subcommand = args.shift();
+		var vm = new VoteManager();
+		var cmd = vm[subcommand];
+		if (cmd === undefined) {
+			args.unshift(subcommand);
+			cmd = vm.ballot;
+		}
+		var voteName = args.shift();
+		cmd.apply(vm, [voteName, args, message]);
 	}
-	var voteName = args.shift();
-	cmd.apply(vm, [voteName, args, message]);
+	catch (err) {
+		message.channel.send(["```", err.stack, "```"].join());
+	}
 }
 exports.main = main;
 
