@@ -1,12 +1,10 @@
-function addThreeBackslashes(message)
+function sendCode(message, code)
 {
-	message.channel.send("```");
+	message.channel.send("```" + code + "```");
 }
 
 function main(message, args)
 {
-	addThreeBackslashes(message);
-	message.channel.send("test");
-	addThreeBackslashes(message);
+	sendCode("test");
 }
 exports.main = main;
