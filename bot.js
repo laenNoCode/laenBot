@@ -6,9 +6,7 @@ var exec = require("child_process").exec;
 // Initialize Discord Bot
 var bot = new Discord.Client();
 
-var consoleAsMessage = {};
-consoleAsMessage.channel = {};
-consoleAsMessage.channel.send = console.log;
+var consoleAsMessage = {channel: {send: console.log}};
 
 var commands = {};
 function update(message)
@@ -75,8 +73,8 @@ bot.on("message",
 		}
 	}
 );
-bot.on("error",(err) => 
-	{
+bot.on("error", (error) => 
+{
 	console.log(error);
-	});
+});
 bot.login(auth.token);
