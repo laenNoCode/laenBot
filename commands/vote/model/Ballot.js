@@ -1,8 +1,8 @@
 class Ballot
 {
-	constructor(person,options = [])
+	constructor(voter, options = [])
 	{
-		this.person = person;
+		this.voter = voter;
 		this.options = options;
 	}
 }

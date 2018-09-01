@@ -1,18 +1,21 @@
-const FOLDER_NAME = "commands/vote/types";
+const VOTE_FOLDER = "commands/vote";
+const TYPES_FOLDER = VOTE_FOLDER + "/types";
+const SUBCOMMAND_FOLDER = VOTE_FOLDER + "/controller/subcommand";
 var VoteSerializer = require("VoteSerializer");
 var fs = require("fs");
-class VotesManager
+
+class VoteManager
 {
 	constructor(fileName = "save/vote/votes.json")
 	{
 		this.vs = new VoteSerializer(fileName);
 	}
 	
-	create(name, message)
+	create(name, args, message)
 	{
-		vote = new Vote(name);
 		if (this.vs.getVote(name) === undefined)
 		{
+			var vote = new Vote(name, message.author);
 			this.vs.serializeVote(vote);
 			message.channel.send("vote " + name + " successfully created");
 		}
@@ -22,19 +25,28 @@ class VotesManager
 		}
 	}
 
-	type(name, type)
+	_fetchVote(name, message)
 	{
-		if (this.vs.getVote(name) === undefined)
+		this.vote = this.vs.getVote(name);
+		if (this.vote === undefined)
 		{
-			message.channel.send("Error: vote " + name + " doesn't exists.");
+			throw new Error("vote " + name + " doesn't exists.");
+		}
+		return this.vote;
+	}
+
+	type(name, args, message)
+	{
+		var type = args[0];
+		if (type === undefined) {
+			message.channel.send("You must provide a vote type (#Unimplemented: this message should list the available vote types)");
 			return;
 		}
-		var names;
-		fs.readdir(FOLDER_NAME, (err, files) =>
+		var vote = this._fetchVote(name, message);
+		fs.readdir(TYPES_FOLDER, (err, files) =>
 		{
-			names = Array.from(files);
+			var names = Array.from(files);
 			
-			var vote = this.vs.getVote(name);
 			if (names.indexOf(type) == -1)
 			{
 				message.channel.send("Error: type " + type + "doesn't exists.");
@@ -43,50 +55,117 @@ class VotesManager
 			vote.type = type;
 			this.vs.serializeVote(vote);
 			message.channel.send("vote " + name + " is now of type " + `${type}.`);
-		}
+		});
 	}
-	results(name, message)
+
+	results(name, args, message)
 	{
-		if (this.vs.getVote(name) === undefined)
-		{
-			message.channel.send("Error: vote " + name + " doesn't exists.");
-			return;
-		}
-		var vote = this.vs.getVote(name);
-		var typeManager = require(FOLDER_NAME + "/" + vote.type);
+		var vote = this._fetchVote(name, message);
+		var typeManager = require(TYPES_FOLDER + "/" + vote.type);
 		typeManager.results(vote, message);
 	}
 
-	options(name, options, message)
+	option(name, args, message)
 	{
-		if (this.vs.getVote(name) === undefined)
-		{
-			message.channel.send("Error: vote " + name + " doesn't exists.");
-			return;
-		}
-		var vote = this.vs.getVote(name);
-		options.forEach((option) =>
-		{
-			vote.options.push(option);
-		});
+		var vote = this._fetchVote(name, message);
+		var optionCmd = require(SUBCOMMAND_FOLDER + "/option").option;
+		optionCmd(vote, args, message);
 		this.vs.serializeVote(vote);
-		message.channel.send("options: " + options.join(" ") + "have been added to the vote " + `${name}.`);
-		
 	}
 
-	putBallot(name, options, message)
+	ballot(name, args, message)
 	{
-		if (this.vs.getVote(name) === undefined)
+		var vote = this._fetchVote(name, message);
+		if (!vote.open)
 		{
-			message.channel.send("Error: vote " + name + " doesn't exists.");
+			message.channel.send("Error: vote " + name + " isn't open.");
 			return;
 		}
-		vote = this.vs.getVote(name);
-		var typeManager = require(FOLDER_NAME + "/" + vote.type);
-		if (typeManager.checkBallot(options, message))
+		var typeManager = require(TYPES_FOLDER + "/" + vote.type);
+
+		var op = new OptionParser(args);
+		var parsed = op.parse();
+		if (parsed.error) {
+			message.channel.send("Error: " + parsed.error);
+			return;
+		}
+
+		var p = parsed;
+		for (var option of [].concat(p.options, p.add, p.rmv))
 		{
-			vote.ballots.push(typeManager.ballotMaker(options));
+			if (vote.options.indexOf(option) === -1)
+			{
+				message.channel.send("Error: option " + option + " is not available.");
+			}
+		}
+
+		var ballot;
+		if (parsed.absolute)
+		{
+			ballot = typeManager.makeBallot(vote.options, parsed.options, message);
+			vote.ballots[message.author] = ballot;
+		}
+		else
+		{
+			ballot = vote.ballots[message.author];
+			ballot = typeManager.changeBallot(vote.options, ballot, parsed.add, parsed.rmv, message);
+			vote.ballots[message.author] = ballot;
 		}
 	}
+
+	status(name, args, message)
+	{
+		var vote = this._fetchVote(name, message);
+		let optionArr = Object.keys(vote.options);
+		let voterArr = Object.keys(vote.ballots);
+		message.channel.send(`\`\`\`js
+vote = {
+	voteName: "${vote.voteName}",
+	type: "${vote.type}",
+	options (${optionArr.length}): {{${optionArr}}},
+	votes (${voterArr.length}): <<${voterArr}>>,
+	creator: "${vote.creator}",
+	open: ${vote.open}
+}
+\`\`\`
+`);
+	}
+
+	open(name, args, message)
+	{
+		var vote = this._fetchVote(name, message);
+		if (vote.open === true) {
+			message.channel.send("Vote " + name + " is already open.");
+			return;
+		}
+		
+		vote.open = true;
+		this.vs.serializeVote(vote);
+	}
+
+	close(name, args, message)
+	{
+		var vote = this._fetchVote(name, message);
+		if (vote.open === false) {
+			message.channel.send("Vote " + name + " is already closed.");
+			return;
+		}
+		
+		vote.open = false;
+		this.vs.serializeVote(vote);
+	}
+
+	result(name, args, message)
+	{
+		var vote = this._fetchVote(name, message);
+		if (vote.open === false) {
+			message.channel.send("Vote " + name + " is already closed.");
+			return;
+		}
+		var typeManager = require(TYPES_FOLDER + "/" + vote.type);
+
+		typeManager.results(vote, message);
+	}
+
 }
 
