@@ -22,11 +22,12 @@ function update(message)
 			stderr +
 			"```"
 		].join("\n"));
-		loadCommands(message);
-		message.channel.send("update done");
+		loadCommands(message, () => {
+			message.channel.send("update done");
+		});
 	});
 }
-function loadCommands(message)
+function loadCommands(message, callback = () => {})
 {
 	commands = {};
 	fs.readdir("./commands", (err, files) =>
@@ -40,6 +41,7 @@ function loadCommands(message)
 				commands[name] = require("./commands/" + name).main;
 			}
 		});
+		callback();
 	});
 	commands["update"] = update;
 }

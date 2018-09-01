@@ -1,6 +1,7 @@
 function main(message, args)
 {
 	message.channel.send("`!vote` is in alpha testing.");
+	message.channel.send("args:" + args);
 	if (args === [] || args === ["help"])
 	{
 		showHelp(message);
@@ -12,6 +13,7 @@ function main(message, args)
 	}
 	try {
 		var VoteManager = require("commands/vote/controller/VoteManager").VoteManager;
+		message.channel.send("VoteManager: " + VoteManager);
 		var subcommand = args.shift();
 		var vm = new VoteManager();
 		var cmd = vm[subcommand];
