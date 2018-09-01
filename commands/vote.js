@@ -1,3 +1,5 @@
+var VoteManager = require("./vote/controller/VoteManager").VoteManager;
+
 function main(message, args)
 {
 	message.channel.send("`!vote` is in alpha testing.");

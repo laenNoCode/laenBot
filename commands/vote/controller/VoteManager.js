@@ -1,8 +1,11 @@
-const VOTE_FOLDER = "commands/vote";
+const VOTE_FOLDER = "..";
 const TYPES_FOLDER = VOTE_FOLDER + "/types";
-const SUBCOMMAND_FOLDER = VOTE_FOLDER + "/controller/subcommand";
-var VoteSerializer = require("VoteSerializer");
+const CONTROLLER_FOLDER = VOTE_FOLDER + "/controller";
+const SUBCOMMAND_FOLDER = CONTROLLER_FOLDER + "/subcommand";
+var VoteSerializer = require(CONTROLLER_FOLDER + "/VoteSerializer");
 var fs = require("fs");
+var Vote = require(VOTE_FOLDER + "/model/Vote");
+var OptionParser = require(SUBCOMMAND_FOLDER + "/OptionParser").OptionParser;
 
 exports.VoteManager = VoteManager;
 
@@ -27,7 +30,7 @@ class VoteManager
 		}
 	}
 
-	_fetchVote(name, message)
+	_fetchVote(name, _message)
 	{
 		var vote = this.vs.getVote(name);
 		if (vote === undefined)

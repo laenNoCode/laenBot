@@ -1,3 +1,4 @@
+var OptionParser = require("./OptionParser").OptionParser;
 exports.option = function (vote, args, message) {
 	var option;
 	var op = OptionParser(args, message);
