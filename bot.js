@@ -39,7 +39,9 @@ function loadCommands(message, callback = () => {})
 				var response = "";
 				var name = array.slice(0, array.length - 1).join(".");
 				try {
-					commands[name] = require("./commands/" + name).main;
+					var cmdPath = "./commands/" + name;
+					delete require.cache[require.resolve(cmdPath)];
+					commands[name] = require(cmdPath).main;
 					response = "`" + config.servers.default.prefix + name + "`";
 				}
 				catch (error) {
