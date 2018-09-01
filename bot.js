@@ -19,9 +19,9 @@ function update(message)
 			"```",
 			"$ git pull -> " + err,
 			"STDOUT",
-			stdout,
+			stdout +
 			"STDERR",
-			stderr,
+			stderr +
 			"```"
 		].join("\n"));
 		loadCommands(message);
@@ -37,8 +37,8 @@ function loadCommands(message)
 			var array = file.split(".");
 			if (array[array.length - 1] == "js")
 			{
-				message.channel.send("`" + file + "`");
 				var name = array.slice(0, array.length - 1).join(".");
+				message.channel.send("`" + config.servers.default.prefix + name + "`");
 				commands[name] = require("./commands/" + name).main;
 			}
 		});
