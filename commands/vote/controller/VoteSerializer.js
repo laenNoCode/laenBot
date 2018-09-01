@@ -1,4 +1,4 @@
-class VotesSerializer
+exports.VotesSerializer = class
 {
 	constructor(fileName)
 	{
@@ -34,4 +34,4 @@ class VotesSerializer
 	{
 		return this._getAsObject()[vote.voteName];
 	}
-}
+};

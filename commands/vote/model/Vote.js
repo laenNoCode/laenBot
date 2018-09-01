@@ -1,4 +1,4 @@
-class Vote
+exports.Vote = class
 {
 	constructor(voteName, creator)
 	{
@@ -9,4 +9,4 @@ class Vote
 		this.creator = creator;
 		this.open = true;
 	}
-}
+};
