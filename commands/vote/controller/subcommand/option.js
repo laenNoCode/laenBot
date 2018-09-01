@@ -14,7 +14,7 @@ exports.option = function (vote, args, message) {
 		{
 			vote.options[option] = true;
 		}
-		var msg = "Options for vote " + vote + " are now: " + parsed.options.join(" ") + ".";
+		var msg = "Options for vote " + vote + " are now: " + parsed.options.join(", ") + ".";
 		message.channel.send(msg);
 	}
 	else
@@ -40,7 +40,7 @@ exports.option = function (vote, args, message) {
 			// Adding the option to the set of accepted options
 			vote.options[option] = true;
 		}
-		op.rmv && message.channel.send("Remvd options " + op.rmv.join(" ") + " fm vote " + vote.name + ".");
-		op.add && message.channel.send("Added options " + op.add.join(" ") + " to vote " + vote.name + ".");
+		op.rmv && message.channel.send("Remvd options " + op.rmv.join(", ") + " fm vote " + vote.name + ".");
+		op.add && message.channel.send("Added options " + op.add.join(", ") + " to vote " + vote.name + ".");
 	}
 };

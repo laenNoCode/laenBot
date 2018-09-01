@@ -4,6 +4,8 @@ const SUBCOMMAND_FOLDER = VOTE_FOLDER + "/controller/subcommand";
 var VoteSerializer = require("VoteSerializer");
 var fs = require("fs");
 
+exports.VoteManager = VoteManager;
+
 class VoteManager
 {
 	constructor(fileName = "save/vote/votes.json")
@@ -27,12 +29,12 @@ class VoteManager
 
 	_fetchVote(name, message)
 	{
-		this.vote = this.vs.getVote(name);
-		if (this.vote === undefined)
+		var vote = this.vs.getVote(name);
+		if (vote === undefined)
 		{
 			throw new Error("vote " + name + " doesn't exists.");
 		}
-		return this.vote;
+		return vote;
 	}
 
 	type(name, args, message)

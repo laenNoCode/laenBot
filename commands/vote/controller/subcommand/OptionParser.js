@@ -45,7 +45,7 @@ exports.OptionParser = class {
 					i = parsed.rmv.indexOf(option);
 					if (i != -1)
 					{
-						parsed.rmv.splice(i);
+						parsed.rmv.splice(i, 1);
 					}
 				}
 				else // "-"

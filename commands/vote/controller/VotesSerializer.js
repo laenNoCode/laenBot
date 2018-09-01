@@ -12,23 +12,24 @@ class VotesSerializer
 
 	_serializeObject(votes, callback)
 	{
-		var fs = require('fs');
+		var fs = require("fs");
 		fs.writeFile(this.fileName, JSON.stringify(votes), callback);
 	}
 
 	removeVote(vote, callback)
 	{
-		votes = this._getAsObject();
-		delete(votes[vote]);
-		_serializeObject(votes);
+		var voteMapping = this._getAsObject();
+		delete(voteMapping[vote]);
+		this._serializeObject(voteMapping, callback);
 	}
 
 	serializeVote(vote, callback)
 	{
-		votes = this._getAsObject();
-		votes[vote.voteName] = vote;
-		this._serializeObject(votes, callback);		
+		var voteMapping = this._getAsObject();
+		voteMapping[vote.voteName] = vote;
+		this._serializeObject(voteMapping, callback);		
 	}
+
 	getVote(vote)
 	{
 		return this._getAsObject()[vote.voteName];
