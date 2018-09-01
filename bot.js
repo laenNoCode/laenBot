@@ -70,7 +70,7 @@ bot.on("message",
 		}
 	}
 );
-bon.on("error",(err) => 
+bot.on("error",(err) => 
 	{
 	console.log(error);
 	});
