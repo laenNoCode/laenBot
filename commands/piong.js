@@ -1,5 +1,5 @@
 function main(message)
 {
-	message.channel.send("ping");
+	message.channel.send("poing");
 }
 exports.main = main;
