@@ -11,13 +11,15 @@ function update(message)
 {
 	message.channel.send("update request received");
 	exec("git pull", (err, stdout, stderr) => {
-		message.channel.send(`\`\`\`
-$ git pull -> ${err}
-STDOUT
-${stdout}
-STDERR
-${stderr}
-\`\`\``);
+		message.channel.send([
+			"```",
+			"$ git pull -> " + err,
+			"STDOUT",
+			stdout,
+			"STDERR",
+			stderr,
+			"```"
+		].join("\n"));
 		loadCommands(message.channel.send);
 		message.channel.send("update done");
 	});
