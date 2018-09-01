@@ -36,9 +36,16 @@ function loadCommands(message, callback = () => {})
 			var array = file.split(".");
 			if (array[array.length - 1] == "js")
 			{
+				var response = "";
 				var name = array.slice(0, array.length - 1).join(".");
-				message.channel.send("`" + config.servers.default.prefix + name + "`");
-				commands[name] = require("./commands/" + name).main;
+				try {
+					commands[name] = require("./commands/" + name).main;
+					response = "`" + config.servers.default.prefix + name + "`";
+				}
+				catch (error) {
+					response = "Error: " + error.message;
+				}
+				message.channel.send(response);
 			}
 		});
 		callback();
