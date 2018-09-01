@@ -11,6 +11,7 @@ exports.VoteManager = class
 {
 	constructor(fileName = "save/vote/votes.json")
 	{
+		console.log(VoteSerializer);
 		this.vs = new VoteSerializer(fileName);
 	}
 	
