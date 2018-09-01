@@ -2,9 +2,9 @@ const VOTE_FOLDER = "..";
 const TYPES_FOLDER = VOTE_FOLDER + "/types";
 const CONTROLLER_FOLDER = ".";
 const SUBCOMMAND_FOLDER = CONTROLLER_FOLDER + "/subcommand";
-var VoteSerializer = require(CONTROLLER_FOLDER + "/VoteSerializer");
 var fs = require("fs");
 var Vote = require(VOTE_FOLDER + "/model/Vote");
+var VoteSerializer = require(CONTROLLER_FOLDER + "/VoteSerializer").VotesSerializer;
 var OptionParser = require(SUBCOMMAND_FOLDER + "/OptionParser").OptionParser;
 
 exports.VoteManager = class
@@ -59,13 +59,6 @@ exports.VoteManager = class
 			this.vs.serializeVote(vote);
 			message.channel.send("vote " + name + " is now of type " + `${type}.`);
 		});
-	}
-
-	results(name, args, message)
-	{
-		var vote = this._fetchVote(name, message);
-		var typeManager = require(TYPES_FOLDER + "/" + vote.type);
-		typeManager.results(vote, message);
 	}
 
 	option(name, args, message)
