@@ -1,11 +1,7 @@
 function main(message, args)
 {
 	message.channel.send("`!vote` is in alpha testing.");
-<<<<<<< HEAD
 	message.channel.send("args (" + args.length + "):" + args);
-=======
-	message.channel.send("args (" + args.lenght + "):" + args);
->>>>>>> 5373a52c202a40a1a78b0751f75d2543ce1cdf6d
 	if (args === [] || args === ["help"])
 	{
 		showHelp(message);
@@ -16,11 +12,7 @@ function main(message, args)
 		return;
 	}
 	try {
-<<<<<<< HEAD
 		var VoteManager = require("./commands/vote/controller/VoteManager").VoteManager;
-=======
-		var VoteManager = require("vote/controller/VoteManager").VoteManager;
->>>>>>> 5373a52c202a40a1a78b0751f75d2543ce1cdf6d
 		message.channel.send("VoteManager: " + VoteManager);
 		var subcommand = args.shift();
 		var vm = new VoteManager();
