@@ -30,10 +30,10 @@ function loadCommands(log)
 	fs.readdir("./commands", (err, files) =>
 	{
 		files.forEach(file => {
-			log("`" + file + "`");
 			var array = file.split(".");
 			if (array[array.length - 1] == "js")
 			{
+				log("`" + file + "`");
 				var name = array.slice(0, array.length - 1).join(".");
 				commands[name] = require("./commands/" + name).main;
 			}
