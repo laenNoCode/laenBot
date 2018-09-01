@@ -2,10 +2,10 @@ const VOTE_FOLDER = "..";
 const TYPES_FOLDER = VOTE_FOLDER + "/types";
 const CONTROLLER_FOLDER = VOTE_FOLDER + "/controller";
 const SUBCOMMAND_FOLDER = CONTROLLER_FOLDER + "/subcommand";
-var VoteSerializer = require(CONTROLLER_FOLDER + "VoteSerializer");
+var VoteSerializer = require(CONTROLLER_FOLDER + "/VoteSerializer");
 var fs = require("fs");
 var Vote = require(VOTE_FOLDER + "/model/Vote");
-var OptionParser = require(SUBCOMMAND_FOLDER + "OptionParser").OptionParser;
+var OptionParser = require(SUBCOMMAND_FOLDER + "/OptionParser").OptionParser;
 
 exports.VoteManager = VoteManager;
 
