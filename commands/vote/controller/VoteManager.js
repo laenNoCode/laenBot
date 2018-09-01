@@ -1,6 +1,6 @@
 const VOTE_FOLDER = "..";
 const TYPES_FOLDER = VOTE_FOLDER + "/types";
-const CONTROLLER_FOLDER = VOTE_FOLDER + "/controller";
+const CONTROLLER_FOLDER = ".";
 const SUBCOMMAND_FOLDER = CONTROLLER_FOLDER + "/subcommand";
 var VoteSerializer = require(CONTROLLER_FOLDER + "/VoteSerializer");
 var fs = require("fs");

@@ -45,7 +45,7 @@ function loadCommands(message, callback = () => {})
 					response = "`" + config.servers.default.prefix + name + "`";
 				}
 				catch (error) {
-					response = "Error: " + error.message;
+					response = "Error while loading " + name +": " + error.message;
 				}
 				message.channel.send(response);
 			}
