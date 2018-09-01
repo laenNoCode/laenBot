@@ -4,7 +4,7 @@ const CONTROLLER_FOLDER = ".";
 const SUBCOMMAND_FOLDER = CONTROLLER_FOLDER + "/subcommand";
 var fs = require("fs");
 var Vote = require(VOTE_FOLDER + "/model/Vote");
-var VoteSerializer = require(CONTROLLER_FOLDER + "/VoteSerializer").VotesSerializer;
+var VoteSerializer = require(CONTROLLER_FOLDER + "/VoteSerializer").VoteSerializer;
 var OptionParser = require(SUBCOMMAND_FOLDER + "/OptionParser").OptionParser;
 
 exports.VoteManager = class
