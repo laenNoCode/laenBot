@@ -1,5 +1,3 @@
-var VoteManager = require("commands/vote/controller/VoteManager").VoteManager;
-
 function main(message, args)
 {
 	message.channel.send("`!vote` is in alpha testing.");
@@ -13,6 +11,7 @@ function main(message, args)
 		return;
 	}
 	try {
+		var VoteManager = require("commands/vote/controller/VoteManager").VoteManager;
 		var subcommand = args.shift();
 		var vm = new VoteManager();
 		var cmd = vm[subcommand];
