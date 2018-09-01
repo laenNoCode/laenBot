@@ -1,4 +1,4 @@
-exports.VotesSerializer = class
+exports.VoteSerializer = class
 {
 	constructor(fileName)
 	{
