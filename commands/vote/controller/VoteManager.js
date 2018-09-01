@@ -7,9 +7,7 @@ var fs = require("fs");
 var Vote = require(VOTE_FOLDER + "/model/Vote");
 var OptionParser = require(SUBCOMMAND_FOLDER + "/OptionParser").OptionParser;
 
-exports.VoteManager = VoteManager;
-
-class VoteManager
+exports.VoteManager = class
 {
 	constructor(fileName = "save/vote/votes.json")
 	{
@@ -172,5 +170,4 @@ vote = {
 		typeManager.results(vote, message);
 	}
 
-}
-
+};
