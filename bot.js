@@ -9,30 +9,37 @@ var bot = new Discord.Client();
 var commands = {};
 function update(message)
 {
+	message.channel.send("update request received");
 	exec("git pull", (err, stdout, stderr) => {
-		loadCommands();
-		message.channel.send("succefully updated");
+		message.channel.send(`\`\`\`
+$ git pull -> ${err}
+STDOUT
+${stdout}
+STDERR
+${stderr}
+\`\`\``);
+		loadCommands(message.channel.send);
+		message.channel.send("update done");
 	});
 }
-function loadCommands()
+function loadCommands(log)
 {
 	commands = {};
 	fs.readdir("./commands", (err, files) =>
-		{
-			files.forEach(file => {
-				console.log(file);
-				var array = file.split(".");
-				if (array[array.length - 1] == "js")
-				{
-					var name = array.slice(0, array.length - 1).join(".");
-					commands[name] = require("./commands/" + name).main;
-				}
-			});
+	{
+		files.forEach(file => {
+			log("`" + file + "`");
+			var array = file.split(".");
+			if (array[array.length - 1] == "js")
+			{
+				var name = array.slice(0, array.length - 1).join(".");
+				commands[name] = require("./commands/" + name).main;
+			}
 		});
+	});
 	commands["update"] = update;
 }
-loadCommands();
-var pongCount = 0;
+loadCommands(console.log);
 bot.on("message", 
 	function (message) 
 	{
@@ -43,13 +50,13 @@ bot.on("message",
 			var commandName = text.split(" ")[0].substring(prefix.length);
 			if (commands[commandName] === undefined)
 			{
-				message.channel.send("la commande que vous avez demandée n'existe pas");
-				message.channel.send(Object.keys(commands).join(" "));	
+				message.channel.send("la commande `" + commandName + "` n'existe pas");
+				message.channel.send(Object.keys(commands).join(" "));
 				return;
 			}
 			try
 			{
-				args = text.split(" ");
+				var args = text.split(" ");
 				args.splice(0, 1);
 				commands[commandName](message, args);
 			}
