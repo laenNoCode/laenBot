@@ -6,6 +6,10 @@ var exec = require("child_process").exec;
 // Initialize Discord Bot
 var bot = new Discord.Client();
 
+var consoleAsMessage = {};
+consoleAsMessage.channel = {};
+consoleAsMessage.channel.send = console.log;
+
 var commands = {};
 function update(message)
 {
@@ -20,11 +24,11 @@ function update(message)
 			stderr,
 			"```"
 		].join("\n"));
-		loadCommands(message.channel.send);
+		loadCommands(message);
 		message.channel.send("update done");
 	});
 }
-function loadCommands(log)
+function loadCommands(message)
 {
 	commands = {};
 	fs.readdir("./commands", (err, files) =>
@@ -33,7 +37,7 @@ function loadCommands(log)
 			var array = file.split(".");
 			if (array[array.length - 1] == "js")
 			{
-				log("`" + file + "`");
+				message.channel.send("`" + file + "`");
 				var name = array.slice(0, array.length - 1).join(".");
 				commands[name] = require("./commands/" + name).main;
 			}
@@ -41,7 +45,8 @@ function loadCommands(log)
 	});
 	commands["update"] = update;
 }
-loadCommands(console.log);
+
+loadCommands(consoleAsMessage);
 bot.on("message", 
 	function (message) 
 	{
