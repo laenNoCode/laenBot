@@ -70,4 +70,8 @@ bot.on("message",
 		}
 	}
 );
+bon.on("error",(err) => 
+	{
+	console.log(error);
+	}
 bot.login(auth.token);
