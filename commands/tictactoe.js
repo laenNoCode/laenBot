@@ -5,6 +5,6 @@ function sendCode(message, code)
 
 function main(message, args)
 {
-	sendCode("test");
+	sendCode(message,"test");
 }
 exports.main = main;
