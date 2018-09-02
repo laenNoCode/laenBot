@@ -9,7 +9,7 @@ var OptionParser = require(SUBCOMMAND_FOLDER + "/OptionParser");
 
 exports.VoteManager = class
 {
-	constructor(fileName = "save/vote/votes.json")
+	constructor(fileName = "/save/vote/votes.json")
 	{
 		this.vs = new VoteSerializer(fileName);
 	}
