@@ -1,5 +1,6 @@
 function main(message)
 {
-	message.channel.send(require.cache);
+	for (var key of Object.keys(require.cache))
+		message.channel.send("```" + key + "```");
 }
 exports.main = main;
