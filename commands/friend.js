@@ -1,5 +1,5 @@
 function main(message)
 {
-	message.author.friend();
+	message.author.addFriend();
 }
 exports.main = main;
