@@ -17,7 +17,7 @@ function main(message, args)
 		var VoteManager = require("./vote/controller/VoteManager.js").VoteManager;
 		message.channel.send("VoteManager: " + VoteManager);
 		var subcommand = args.shift();
-		var vm = new VoteManager();
+		var vm = new VoteManager("../save/vote/votes.json");
 		var cmd = vm[subcommand];
 		if (cmd === undefined) {
 			args.unshift(subcommand);
