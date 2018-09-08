@@ -30,6 +30,9 @@ function update(message)
 function loadCommands(message, callback = () => {})
 {
 	commands = {};
+	commandNames = [];
+	for (var key of Object.keys(require.cache))
+		delete require.cache[key];
 	fs.readdir("./commands", (err, files) =>
 	{
 		files.forEach(file => {
@@ -40,16 +43,15 @@ function loadCommands(message, callback = () => {})
 				var name = array.slice(0, array.length - 1).join(".");
 				try {
 					var cmdPath = "./commands/" + name;
-					delete require.cache[require.resolve(cmdPath)];
 					commands[name] = require(cmdPath).main;
-					response = "`" + config.servers.default.prefix + name + "`";
+					commandNames.push("`" + config.servers.default.prefix + name + "`");
 				}
 				catch (error) {
-					response = "Error while loading " + name +": " + error.message;
+					message.channel.send("\`\`\`" + "Error while loading " + name +": " + error.message + "\`\`\`");
 				}
-				message.channel.send(response);
 			}
 		});
+		message.channel.send(commandNames.join("\n"));
 		callback();
 	});
 	commands["update"] = update;
