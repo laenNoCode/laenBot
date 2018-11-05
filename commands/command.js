@@ -12,5 +12,6 @@ function main(message,args)
 			stderr +
 			"```"
 		].join("\n"));
+	});
 }
 exports.main = main;
