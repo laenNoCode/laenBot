@@ -76,7 +76,7 @@ bot.on("message",
 			{
 				var args = text.split(" ");
 				args.splice(0, 1);
-				commands[commandName](message, args);
+				commands[commandName](message, args, bot);
 			}
 			catch(exception)
 			{
